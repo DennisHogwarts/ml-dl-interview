@@ -110,7 +110,7 @@ export const chapters = [
                 type: 'concept',
                 title: '五、优化器大家族：从 SGD 到 Adam',
                 content: '不同优化器就像不同的"下山策略"。理解它们的演进关系，是面试高频考点。',
-                image: './images/optimizer_comparison.png',
+                image: './images/optimizer_compare.png',
                 imageCaption: 'SGD（灰色）在窄谷中剧烈震荡；Momentum（紫色）利用惯性平滑路径；Adam（蓝色）自适应学习率，路径最优',
                 highlight: '一句话总结演进路线：SGD（纯梯度）→ SGD + Momentum（加惯性）→ AdaGrad（自适应学习率）→ RMSProp（修复衰减过快）→ Adam（Momentum + RMSProp）。面试时能说出这条演进线，就证明你真正理解了优化器设计的本质。'
             },
@@ -224,7 +224,7 @@ export const chapters = [
                 type: 'concept',
                 title: '二、过拟合：模型的"死记硬背"病',
                 content: '如果我们用一个超高次多项式去拟合只有 10 个点的数据，曲线会精确穿过每一个点——训练误差为零！但面对新数据，它的表现会极差。这就是过拟合：模型不是在"学习规律"，而是在"背答案"。',
-                image: './images/regularization_compare.png',
+                image: './images/regularization.png',
                 imageCaption: '欠拟合（模型太简单）→ 合适拟合 → 过拟合（模型太复杂）。正则化就是在模型复杂度和拟合能力之间找平衡',
                 highlight: '过拟合的本质：模型的容量（capacity）远超数据的复杂度。就像让一个博士生去做小学加减法考试——他可能会过度解读题目，反而做错。'
             },
@@ -460,7 +460,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、决策树：把判断写成树',
                 content: '决策树从根节点开始，对数据的每个特征提出"是或否"的问题（如"年龄 > 30？"），根据答案走向不同分支，直到到达叶节点给出最终预测。每次分裂选择的特征，应该是能让子节点"最纯"的那个。',
-                image: './images/decision_tree_ensemble.png',
+                image: './images/decision_tree.png',
                 imageCaption: '单棵决策树通过特征分裂做判断（左），集成学习将多棵树的结果综合（右）',
                 highlight: '如何衡量"纯度"？有三种指标：① 信息增益（ID3，基于信息熵的减少量）；② 信息增益比（C4.5，修正了多值特征的偏好）；③ 基尼不纯度（CART，sklearn 默认，计算最快）。'
             },
