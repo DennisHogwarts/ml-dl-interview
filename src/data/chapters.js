@@ -19,7 +19,7 @@ export const chapters = [
                 type: 'concept',
                 title: '二、矩阵 × 向量 = 空间变换',
                 content: '矩阵最本质的身份不是"二维数组"，而是一台"空间变形机器"。当你用矩阵 A 乘以向量 v 时，你其实是在对整个空间进行拉伸、旋转或挤压。',
-                image: '/images/matrix_transform.png',
+                image: './images/matrix_transform.png',
                 imageCaption: '矩阵将原始空间（左）变换为新空间（右），正方形网格变成了平行四边形',
                 highlight: '神经网络的每一层就是一次矩阵变换 + 非线性激活。多层叠加后，原本混在一起的数据会被逐层"揉搓"、"拉扯"，直到不同类别被干净利落地分开。'
             },
@@ -27,7 +27,7 @@ export const chapters = [
                 type: 'concept',
                 title: '三、点积（内积）：衡量"有多像"',
                 content: '两个向量 a·b = |a||b|cosθ。当 θ 很小（方向接近），点积很大，说明很"像"；θ = 90°（正交），点积为 0，说明"完全无关"。',
-                image: '/images/dot_product.png',
+                image: './images/dot_product.png',
                 imageCaption: '点积的几何意义：向量 A 在向量 B 方向上的投影。角度越小，投影越长，相似度越高',
                 highlight: 'Transformer 的核心——注意力机制（Attention），本质就是用 Q·K 的点积来算两个词之间的"相关性分数"。分数越高，说明两个词越"应该互相关注"。'
             },
@@ -35,7 +35,7 @@ export const chapters = [
                 type: 'concept',
                 title: '四、特征值与特征向量：变换中的"不动如山"',
                 content: '当矩阵 A 对空间做变换时，绝大多数向量的方向和长度都会改变。但有一些特殊的向量，它们的方向在变换后"纹丝不动"，只是被拉长或缩短了——这些就是特征向量，拉伸的倍数就是特征值。',
-                image: '/images/eigenvector.png',
+                image: './images/eigenvector.png',
                 imageCaption: '大多数向量在变换后方向改变（灰色），但特征向量只改变长度不改变方向（蓝色和紫色）',
                 highlight: 'PCA 降维的原理：找到数据协方差矩阵的特征向量中，特征值最大的那几个方向（即数据方差最大的方向），然后把数据投影到这些方向上。大特征值 = 重要信息，小特征值 = 可丢弃的噪音。'
             },
@@ -82,7 +82,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、损失函数：模型的"考试成绩单"',
                 content: '损失函数量化了"模型的预测与真实答案之间的差距"。它的值越小，模型越好。你可以把它想象成一片连绵起伏的山地——每一个山峰代表一组"很差的参数"，每一个谷底代表一组"不错的参数"，而我们的目标是找到最深的那个谷底。',
-                image: '/images/loss_landscape.png',
+                image: './images/loss_landscape.png',
                 imageCaption: '损失曲面示意图：红色区域损失高，蓝色区域损失低。梯度下降沿着虚线路径从起点走向全局最小值',
                 highlight: '常见的损失函数：回归任务用 MSE（均方误差）；分类任务用交叉熵（Cross-Entropy）。选错损失函数 = 给模型出了错误的考卷，答案再好也白搭。'
             },
@@ -96,7 +96,7 @@ export const chapters = [
                 type: 'concept',
                 title: '三、学习率：步子迈多大是个技术活',
                 content: '学习率（Learning Rate）控制每次参数更新的幅度。它可能是训练中最重要的超参数——没有之一。',
-                image: '/images/learning_rate.png',
+                image: './images/learning_rate.png',
                 imageCaption: '学习率太大：在谷底来回震荡；学习率合适：平稳收敛；学习率太小：进度极慢且容易卡住',
                 highlight: '实践中常用 Learning Rate Schedule（学习率衰减策略）：开始用较大步子快速接近谷底，后期逐渐缩小步子做精细调整。常见策略有 Cosine Annealing、Warm-up + Decay 等。'
             },
@@ -110,7 +110,7 @@ export const chapters = [
                 type: 'concept',
                 title: '五、优化器大家族：从 SGD 到 Adam',
                 content: '不同优化器就像不同的"下山策略"。理解它们的演进关系，是面试高频考点。',
-                image: '/images/optimizer_compare.png',
+                image: './images/optimizer_comparison.png',
                 imageCaption: 'SGD（灰色）在窄谷中剧烈震荡；Momentum（紫色）利用惯性平滑路径；Adam（蓝色）自适应学习率，路径最优',
                 highlight: '一句话总结演进路线：SGD（纯梯度）→ SGD + Momentum（加惯性）→ AdaGrad（自适应学习率）→ RMSProp（修复衰减过快）→ Adam（Momentum + RMSProp）。面试时能说出这条演进线，就证明你真正理解了优化器设计的本质。'
             },
@@ -157,7 +157,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、KNN 的核心思想：问邻居',
                 content: '想象你搬到一个新小区，不知道该去哪个超市买菜。你问了周围最近的 5 个邻居（K=5），3 个说去 A 超市，2 个说去 B 超市——你就选 A 超市。KNN 就是这个逻辑。',
-                image: '/images/knn_neighbors.png',
+                image: './images/knn_neighbors.png',
                 imageCaption: 'KNN 分类：查询点（白色）的 5 个最近邻中蓝色占多数，因此被分类为蓝色',
                 highlight: 'K 值的选择至关重要：K 太小（如 K=1），容易被个别噪声点带偏（过拟合）；K 太大（如 K=N），所有点都投票，直接退化成"哪个类别数量多就选谁"（欠拟合）。实践中常用交叉验证来选取最优 K。'
             },
@@ -171,7 +171,7 @@ export const chapters = [
                 type: 'concept',
                 title: '三、KD-Tree：加速搜索的利器',
                 content: '暴力搜索所有数据点找最近邻，时间复杂度是 O(N)。KD-Tree 是一种二叉树，它把空间像切蛋糕一样不断对半切割——先沿 x 轴切一刀，再沿 y 轴切一刀——把数据分区管理。查找时可以快速跳过大量不可能是近邻的区域。',
-                image: '/images/kdtree_partition.png',
+                image: './images/kdtree_partition.png',
                 imageCaption: 'KD-Tree 将空间交替沿不同维度划分，形成二叉树结构，加速最近邻搜索',
                 highlight: '注意：KD-Tree 在低维空间（<20维）效果很好，搜索时间约 O(log N)。但维度一高，它的效率也会退化到接近暴力搜索。此时应改用近似最近邻方法，如 LSH（局部敏感哈希）或 FAISS。'
             },
@@ -224,7 +224,7 @@ export const chapters = [
                 type: 'concept',
                 title: '二、过拟合：模型的"死记硬背"病',
                 content: '如果我们用一个超高次多项式去拟合只有 10 个点的数据，曲线会精确穿过每一个点——训练误差为零！但面对新数据，它的表现会极差。这就是过拟合：模型不是在"学习规律"，而是在"背答案"。',
-                image: '/images/regularization.png',
+                image: './images/regularization_compare.png',
                 imageCaption: '欠拟合（模型太简单）→ 合适拟合 → 过拟合（模型太复杂）。正则化就是在模型复杂度和拟合能力之间找平衡',
                 highlight: '过拟合的本质：模型的容量（capacity）远超数据的复杂度。就像让一个博士生去做小学加减法考试——他可能会过度解读题目，反而做错。'
             },
@@ -283,7 +283,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、从线性到概率：Sigmoid 的妙用',
                 content: '线性模型算出 z = wᵀx + b，这个值可以从 -∞ 到 +∞，无法直接当"概率"用。Sigmoid 函数 σ(z) = 1/(1+e⁻ᶻ) 就像一个"压缩器"，把任何实数都映射到 (0, 1) 区间，完美对应概率的含义。',
-                image: '/images/logistic_sigmoid.png',
+                image: './images/logistic_sigmoid.png',
                 imageCaption: 'Sigmoid 函数将线性输出映射为概率，配合决策阈值 0.5 实现分类',
                 highlight: '逻辑回归的决策边界其实是一个超平面（wᵀx + b = 0）。Sigmoid 函数决定了离这个超平面越远的点，模型对其分类越"自信"（概率越接近 0 或 1）。'
             },
@@ -342,7 +342,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、贝叶斯定理：从"原因推结果"到"结果推原因"',
                 content: '贝叶斯定理解决的是"逆概率"问题：已知结果，反推原因的概率。比如你打喷嚏（结果），想知道自己是感冒了还是过敏了（原因）。贝叶斯公式：P(感冒|打喷嚏) = P(打喷嚏|感冒) × P(感冒) / P(打喷嚏)。',
-                image: '/images/bayes_theorem.png',
+                image: './images/bayes_theorem.png',
                 imageCaption: '朴素贝叶斯垃圾邮件分类：根据邮件中出现的关键词计算是垃圾邮件的后验概率',
                 highlight: '先验概率 P(类别) 代表"没看到数据之前的经验"；似然 P(特征|类别) 代表"如果是这个类别，看到这些特征的概率"；后验概率 P(类别|特征) 是最终预测结果。贝叶斯定理就是把先验和似然结合起来，得到后验。'
             },
@@ -401,7 +401,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、最大间隔：分得开还要分得"胖"',
                 content: '想象两军对垒，中间有一片无人区。SVM 要做的是让这片"无人区"（间隔 margin）尽可能宽。间隔越宽，模型的泛化能力越强——因为新数据即使有些偏移，也不容易越过宽阔的分界线。',
-                image: '/images/svm_margin.png',
+                image: './images/svm_margin.png',
                 imageCaption: 'SVM 找到最大间隔的超平面，只有"骑在边界上"的支持向量决定了这条线的位置',
                 highlight: '关键洞察：决定分界线位置的，只有那些"骑在间隔边界上"的少数数据点——它们叫做"支持向量"（Support Vectors）。删掉其他所有训练数据，分界线不会有任何变化！这使得 SVM 天然具有对噪声的鲁棒性。'
             },
@@ -460,7 +460,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、决策树：把判断写成树',
                 content: '决策树从根节点开始，对数据的每个特征提出"是或否"的问题（如"年龄 > 30？"），根据答案走向不同分支，直到到达叶节点给出最终预测。每次分裂选择的特征，应该是能让子节点"最纯"的那个。',
-                image: '/images/decision_tree.png',
+                image: './images/decision_tree_ensemble.png',
                 imageCaption: '单棵决策树通过特征分裂做判断（左），集成学习将多棵树的结果综合（右）',
                 highlight: '如何衡量"纯度"？有三种指标：① 信息增益（ID3，基于信息熵的减少量）；② 信息增益比（C4.5，修正了多值特征的偏好）；③ 基尼不纯度（CART，sklearn 默认，计算最快）。'
             },
@@ -533,7 +533,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、卷积操作：用小窗口"扫描"图片',
                 content: '卷积核（如 3×3 的小矩阵）在图片上滑动，每到一个位置就和对应区域做元素乘法再求和，得到一个数。这个"扫描一遍"会产生一张特征图（Feature Map）。不同的卷积核能检测不同的模式：有的检测水平边缘，有的检测垂直边缘，有的检测纹理。',
-                image: '/images/cnn_architecture.png',
+                image: './images/cnn_architecture.png',
                 imageCaption: 'CNN 架构：输入图像 → 卷积层提取特征 → 池化层降低尺寸 → 全连接层分类',
                 highlight: '参数共享是 CNN 的超能力：同一个卷积核在整张图片上滑动共享权重，不管猫出现在图片左上角还是右下角，同一个"猫眼检测器"都能识别出来。这叫做平移不变性（Translation Invariance），是 CNN 远优于全连接网络处理图像的核心原因。'
             },
@@ -592,7 +592,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、RNN：带"记忆"的神经网络',
                 content: 'RNN（Recurrent Neural Network）在每个时间步接收两个输入：当前数据 xₜ 和上一步的隐藏状态 hₜ₋₁。隐藏状态就像一个"记忆条"，把之前看过的信息压缩成一个向量传递下去。这使得 RNN 能理论上"记住"任意长的历史信息。',
-                image: '/images/rnn_lstm.png',
+                image: './images/rnn_lstm.png',
                 imageCaption: 'RNN 链式结构（上）：隐藏状态在时间步间传递，但长序列会梯度消失。LSTM（下）：门控机制让信息选择性保留',
                 highlight: '理论很美好，现实很骨感：由于反向传播时梯度要连乘很多个矩阵，当序列很长时，梯度会指数级缩小（梯度消失）或爆炸。这意味着基础 RNN 实际上只能"记住"最近几步的信息。'
             },
@@ -657,7 +657,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、注意力机制：让模型学会"看重点"',
                 content: '人类阅读一段话时，不会平等地关注每个字——有些词更重要。注意力机制模拟了这种能力：对于当前要处理的位置，计算它和序列中所有位置的"相关性分数"，然后按相关性加权求和。相关性高的位置获得更大的权重，就像把"注意力"集中在关键信息上。',
-                image: '/images/transformer_arch.png',
+                image: './images/transformer_arch.png',
                 imageCaption: 'Transformer 自注意力：每个 token 生成 Q、K、V 向量，Q·K 计算注意力分数，加权求和 V 得到输出',
                 highlight: '自注意力 vs 交叉注意力：自注意力中 Q、K、V 都来自同一个序列（序列自己看自己）；交叉注意力中 Q 来自一个序列、K 和 V 来自另一个序列（如翻译任务中，Decoder 的 Q 去"查询"Encoder 的 K、V）。'
             },
@@ -722,7 +722,7 @@ export const chapters = [
                 type: 'concept',
                 title: '一、GAN：生成器 vs 判别器的博弈',
                 content: '两个网络互相对抗：生成器（Generator）试图造假——从随机噪声生成以假乱真的图片；判别器（Discriminator）试图识破——区分真图和假图。两者在博弈中共同进步，最终生成器"造假"到了判别器无法分辨的程度。',
-                image: '/images/generative_models.png',
+                image: './images/generative_models.png',
                 imageCaption: '三大生成模型对比：GAN（对抗博弈）、VAE（编码-解码与隐空间分布）、Diffusion（加噪-去噪过程）',
                 highlight: 'GAN 的致命弱点：① 训练不稳定（生成器和判别器要保持平衡，很容易"崩塌"）；② 模式坍缩（Mode Collapse）——生成器只学会生成少数几种图片来"骗"判别器，缺乏多样性。WGAN（Wasserstein GAN）和 StyleGAN 等后续工作部分解决了这些问题。'
             },
