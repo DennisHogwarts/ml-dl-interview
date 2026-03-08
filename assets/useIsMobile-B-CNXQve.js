@@ -1,0 +1,1 @@
+import{r as t}from"./react-core-DLqwTASX.js";function n(){const[s,i]=t.useState(!1);return t.useEffect(()=>{const e=()=>i(window.innerWidth<=768);return e(),window.addEventListener("resize",e),()=>window.removeEventListener("resize",e)},[]),s}export{n as u};

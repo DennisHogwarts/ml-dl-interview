@@ -1,0 +1,1 @@
+import{c as s,r as t}from"./index-BDPADnV9.js";const i=[["path",{d:"m9 18 6-6-6-6",key:"mthhwq"}]],c=s("chevron-right",i);function a(){const[o,n]=t.useState(!1);return t.useEffect(()=>{const e=()=>n(window.innerWidth<=768);return e(),window.addEventListener("resize",e),()=>window.removeEventListener("resize",e)},[]),o}export{c as C,a as u};
