@@ -1,0 +1,78 @@
+{
+  "chapterId": "0.16",
+  "format": "interview-markdown-v1",
+  "source": "static-local",
+  "generatedAt": "2026-03-08T14:56:18.914Z",
+  "markdown": "# 0.16 DL Softmax 回归与多分类\n> DESC: Softmax 把原始分数变成概率分布——多分类任务的标准输出层。\n\n## [intro] 导读\n当分类任务不只有两个类别时（比如 MNIST 的 10 个数字，ImageNet 的 1000 类），我们需要 Softmax 回归（也叫多项逻辑回归）。它将线性层输出的 K 个原始分数（logits）转化为 K 个类别的概率，且概率之和恰好为 1。这是几乎所有分类神经网络的标准输出层。\n\n## [concept] 一、Softmax 函数：把任意分数变成概率\nSoftmax(zᵢ) = exp(zᵢ) / Σⱼ exp(zⱼ)。它做了两件事：① exp() 把任何实数变成正数；② 除以总和使其归一化到 (0, 1) 且和为 1——完美满足概率的条件。下标 i 对应的类别预测概率正比于其 logit 的指数值。\n\n![Softmax 多分类流水线：输入 → 线性层输出 Logits → Softmax 转为概率分布（∑=1）→ 预测类别](./images/softmax_multiclass.png)\n\n> [!highlight]\n> Softmax 的\"温度\"参数 T：在 Logit 除以 T 后再 Softmax：若 T→0，Softmax 趋近于 argmax（只保留最大值置信度 100%，其余 0%）；若 T→∞，输出趋近于均匀分布。大语言模型生成时调节 T（Temperature）来控制输出的\"创意度\"——T 高生成更多样，T 低更保守正确。\n\n## [concept] 二、交叉熵损失：多分类的最优损失函数\n交叉熵损失：L = -Σᵢ yᵢ log(p̂ᵢ)，其中 yᵢ 是 one-hot 标签（真实类别为 1，其余为 0），p̂ᵢ 是 Softmax 输出的概率。由于 one-hot 只有一项非 0，简化为 L = -log(p̂_correct)——就是对真实类别的预测概率取负对数。\n\n> [!highlight]\n> 为什么交叉熵和 Softmax 是天生一对？从最大似然估计的角度看，最大化所有样本被正确分类的概率（联合似然），等价于最小化交叉熵损失。而且 Softmax + 交叉熵的梯度形式极为简洁：∂L/∂zᵢ = p̂ᵢ - yᵢ（预测概率 - 真实标签）。这个简洁性不是巧合，而是数学上精心设计的结果。\n\n## [concept] 三、数值稳定性：exp() 溢出怎么办？\n直接计算 exp(zᵢ) 在 zᵢ 很大时会数值溢出（浮点数上溢成 inf）。标准技巧：减去最大值 m = max(z)，即 Softmax(z - m)（数学上等价，因为分子分母同乘 exp(-m) 抵消了）。PyTorch 的 `F.softmax()` 和 `F.cross_entropy()` 都内置了这个技巧，应直接使用框架函数而不是手动计算。\n\n> [!highlight]\n> 实践建议：永远用 `nn.CrossEntropyLoss()`（等价于 log_softmax + NLLLoss），而不是先手动 Softmax 然后再求交叉熵。前者数值更稳定（fused kernel），后者两步分开计算可能引入精度损失和额外开销。\n\n## [formula] 核心公式速查\n- Softmax :: p̂ᵢ = exp(zᵢ) / Σⱼ exp(zⱼ)\n- 多分类交叉熵 :: L = -Σ yᵢ log(p̂ᵢ) = -log(p̂_correct)\n- Softmax 梯度 :: ∂L/∂zᵢ = p̂ᵢ - yᵢ（预测 - 真实，极其简洁）\n- 数值稳定 Softmax :: Softmax(z - max(z))，数学等价但不溢出\n\n## [qa] 模拟面试问答\n\n### Q1: Softmax 和 Sigmoid 有什么关系？\n> [!tag] 必问题\n\n对于二分类（K=2），Softmax 退化为 Sigmoid！Softmax(z₁, z₂) 中 p̂₁ = exp(z₁)/(exp(z₁)+exp(z₂))，令 Δz = z₁ - z₂，则 p̂₁ = exp(Δz)/(1+exp(Δz)) = σ(Δz)——就是 Sigmoid。因此逻辑回归是 Softmax 回归的特殊情形（K=2），Softmax 是逻辑回归的推广到多分类。\n\n### Q2: Softmax 有哪些缺点？有没有替代方案？\n> [!tag] 高频考点\n\n① 不确定性校准差——Softmax 输出的概率往往过于自信（预测一个类别概率 0.99，但实际可能并没有那么确定）；② 类别数量很大时（如词表 50000 词）计算的分母 ΣeZⱼ 代价很大。替代方案：负采样（Negative Sampling，Word2Vec 训练）、分层 Softmax（Hierarchical Softmax，将词表组织成二叉树）、Temperature Scaling（校准 Softmax 的置信度）。\n\n### Q3: 标签平滑（Label Smoothing）是什么？为什么有效？\n> [!tag] 加分题\n\n标签平滑将 one-hot 硬标签 [0,...,1,...,0] 替换为软标签 [ε/K,...,1-ε+ε/K,...,ε/K]，即真实类别的概率从 1 降到 1-ε，其余类别从 0 升到 ε/K（ε 通常为 0.1）。效果：防止模型过度自信（cross entropy 驱动模型把正确类概率推向 1、其余推向 0，而标签平滑阻止了这种极端），有正则化效果，在图像分类等任务上能提升约 0.5-1% 的准确率。",
+  "chapter": {
+    "id": "0.16",
+    "title": "0.16 DL Softmax 回归与多分类",
+    "category": "Deep Learning Basics",
+    "desc": "Softmax 把原始分数变成概率分布——多分类任务的标准输出层。",
+    "sections": [
+      {
+        "type": "intro",
+        "content": "当分类任务不只有两个类别时（比如 MNIST 的 10 个数字，ImageNet 的 1000 类），我们需要 Softmax 回归（也叫多项逻辑回归）。它将线性层输出的 K 个原始分数（logits）转化为 K 个类别的概率，且概率之和恰好为 1。这是几乎所有分类神经网络的标准输出层。"
+      },
+      {
+        "type": "concept",
+        "title": "一、Softmax 函数：把任意分数变成概率",
+        "content": "Softmax(zᵢ) = exp(zᵢ) / Σⱼ exp(zⱼ)。它做了两件事：① exp() 把任何实数变成正数；② 除以总和使其归一化到 (0, 1) 且和为 1——完美满足概率的条件。下标 i 对应的类别预测概率正比于其 logit 的指数值。",
+        "image": "./images/softmax_multiclass.png",
+        "imageCaption": "Softmax 多分类流水线：输入 → 线性层输出 Logits → Softmax 转为概率分布（∑=1）→ 预测类别",
+        "highlight": "Softmax 的\"温度\"参数 T：在 Logit 除以 T 后再 Softmax：若 T→0，Softmax 趋近于 argmax（只保留最大值置信度 100%，其余 0%）；若 T→∞，输出趋近于均匀分布。大语言模型生成时调节 T（Temperature）来控制输出的\"创意度\"——T 高生成更多样，T 低更保守正确。"
+      },
+      {
+        "type": "concept",
+        "title": "二、交叉熵损失：多分类的最优损失函数",
+        "content": "交叉熵损失：L = -Σᵢ yᵢ log(p̂ᵢ)，其中 yᵢ 是 one-hot 标签（真实类别为 1，其余为 0），p̂ᵢ 是 Softmax 输出的概率。由于 one-hot 只有一项非 0，简化为 L = -log(p̂_correct)——就是对真实类别的预测概率取负对数。",
+        "highlight": "为什么交叉熵和 Softmax 是天生一对？从最大似然估计的角度看，最大化所有样本被正确分类的概率（联合似然），等价于最小化交叉熵损失。而且 Softmax + 交叉熵的梯度形式极为简洁：∂L/∂zᵢ = p̂ᵢ - yᵢ（预测概率 - 真实标签）。这个简洁性不是巧合，而是数学上精心设计的结果。"
+      },
+      {
+        "type": "concept",
+        "title": "三、数值稳定性：exp() 溢出怎么办？",
+        "content": "直接计算 exp(zᵢ) 在 zᵢ 很大时会数值溢出（浮点数上溢成 inf）。标准技巧：减去最大值 m = max(z)，即 Softmax(z - m)（数学上等价，因为分子分母同乘 exp(-m) 抵消了）。PyTorch 的 `F.softmax()` 和 `F.cross_entropy()` 都内置了这个技巧，应直接使用框架函数而不是手动计算。",
+        "highlight": "实践建议：永远用 `nn.CrossEntropyLoss()`（等价于 log_softmax + NLLLoss），而不是先手动 Softmax 然后再求交叉熵。前者数值更稳定（fused kernel），后者两步分开计算可能引入精度损失和额外开销。"
+      },
+      {
+        "type": "formula",
+        "title": "核心公式速查",
+        "items": [
+          {
+            "label": "Softmax",
+            "formula": "p̂ᵢ = exp(zᵢ) / Σⱼ exp(zⱼ)"
+          },
+          {
+            "label": "多分类交叉熵",
+            "formula": "L = -Σ yᵢ log(p̂ᵢ) = -log(p̂_correct)"
+          },
+          {
+            "label": "Softmax 梯度",
+            "formula": "∂L/∂zᵢ = p̂ᵢ - yᵢ（预测 - 真实，极其简洁）"
+          },
+          {
+            "label": "数值稳定 Softmax",
+            "formula": "Softmax(z - max(z))，数学等价但不溢出"
+          }
+        ]
+      }
+    ],
+    "qa": [
+      {
+        "q": "Q1: Softmax 和 Sigmoid 有什么关系？",
+        "a": "对于二分类（K=2），Softmax 退化为 Sigmoid！Softmax(z₁, z₂) 中 p̂₁ = exp(z₁)/(exp(z₁)+exp(z₂))，令 Δz = z₁ - z₂，则 p̂₁ = exp(Δz)/(1+exp(Δz)) = σ(Δz)——就是 Sigmoid。因此逻辑回归是 Softmax 回归的特殊情形（K=2），Softmax 是逻辑回归的推广到多分类。",
+        "tag": "必问题"
+      },
+      {
+        "q": "Q2: Softmax 有哪些缺点？有没有替代方案？",
+        "a": "① 不确定性校准差——Softmax 输出的概率往往过于自信（预测一个类别概率 0.99，但实际可能并没有那么确定）；② 类别数量很大时（如词表 50000 词）计算的分母 ΣeZⱼ 代价很大。替代方案：负采样（Negative Sampling，Word2Vec 训练）、分层 Softmax（Hierarchical Softmax，将词表组织成二叉树）、Temperature Scaling（校准 Softmax 的置信度）。",
+        "tag": "高频考点"
+      },
+      {
+        "q": "Q3: 标签平滑（Label Smoothing）是什么？为什么有效？",
+        "a": "标签平滑将 one-hot 硬标签 [0,...,1,...,0] 替换为软标签 [ε/K,...,1-ε+ε/K,...,ε/K]，即真实类别的概率从 1 降到 1-ε，其余类别从 0 升到 ε/K（ε 通常为 0.1）。效果：防止模型过度自信（cross entropy 驱动模型把正确类概率推向 1、其余推向 0，而标签平滑阻止了这种极端），有正则化效果，在图像分类等任务上能提升约 0.5-1% 的准确率。",
+        "tag": "加分题"
+      }
+    ]
+  }
+}
