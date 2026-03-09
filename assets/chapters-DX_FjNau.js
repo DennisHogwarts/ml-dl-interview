@@ -1,0 +1,1 @@
+import{l as t,p as e}from"./chapterRegistry-BxCr73FD.js";import{l as o,p as s}from"./chapterContent-XSDPfBDu.js";async function c(r){{try{const a=await o(r);if(a)return a}catch(a){console.error("Failed to load static chapter snapshot:",a)}return t(r)}}function i(r,a){return()=>{}}function n(r){return s(r).then(a=>a||e(r))}export{c as l,n as p,i as s};
